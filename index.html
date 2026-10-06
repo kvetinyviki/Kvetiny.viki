@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Květinářství Viki | Praha 7 – Holešovice</title>
+  
+  <!-- Tailwind CSS Pro moderní vzhled -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- PapaParse pro čtení Google Tabulky -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <!-- Lucide Ikony -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafb;
+    }
+    .hero-gradient {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.40) 100%);
+    }
+  </style>
+</head>
+<body class="text-slate-800 pb-20">
+
+  <!-- TVŮJ CSV ODKAZ Z GOOGLE TABULKY -->
+  <script>
+    const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1motz9TVZGvHgP_z1PXqDOAubsMDcGMBD7kTEfcxUDsynmkknRKb_Dj0GyCn8-zeTBYuuhwvulu65/pub?output=csv";
+  </script>
+
+  <!-- HORNÍ LIŠTA S OTEVÍRACÍ DOBOU & KONTAKTY -->
+  <header class="sticky top-0 z-50 bg-emerald-900 text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between text-xs sm:text-sm">
+      <div class="flex items-center gap-2">
+        <span id="status-badge" class="px-2.5 py-0.5 rounded-full font-bold text-xs bg-emerald-700 text-emerald-100 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Načítám...
+        </span>
+        <span class="hidden md:inline text-emerald-200">| V Háji 1184/20, Praha 7</span>
+      </div>
+      <div class="flex items-center gap-3 font-medium">
+        <a href="tel:604459621" class="hover:text-emerald-200 flex items-center gap-1 transition">
+          <i data-lucide="phone" class="w-3.5 h-3.5"></i> <span>604 459 621</span>
+        </a>
+        <a href="https://www.facebook.com/@KvetinarstviViki" target="_blank" class="hover:text-emerald-200 flex items-center gap-1 transition">
+          <i data-lucide="facebook" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Facebook</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO BANNER S TVOJÍ FOTKOU Č. 1 -->
+  <section class="relative bg-slate-900 text-white min-h-[320px] sm:min-h-[400px] flex items-center justify-center text-center px-4 overflow-hidden">
+    <img id="hero-bg" src="https://scontent-prg1-1.xx.fbcdn.net/v/t39.30808-6/729161148_1839971283657922_1095141761581329529_n.jpg?stp=dst-jpg_tt6&cstp=mx1808x2048&ctp=s1808x2048&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pAXXxsU6oEIQ7kNvwGCp8Hi&_nc_oc=AdqjmIhENVoiMbxlK65y5LYDQRbSM0PNbix35udVumQ1kSsBczADwJLGL5TzVadpYBA&_nc_zt=23&_nc_ht=scontent-prg1-1.xx&_nc_gid=qf-kNdlJyh1rUAfLyPovww&_nc_ss=7b2a8&oh=00_AQP4oI0yK83ZeTko-Hs6Pf9y3tBcBAYAV6NpUepd5Uv01A&oe=6ACA8F85" alt="Květinářství Viki" class="absolute inset-0 w-full h-full object-cover opacity-40">
+    <div class="relative z-10 max-w-2xl mx-auto py-10">
+      <span class="inline-block px-3 py-1 bg-emerald-500/80 backdrop-blur-sm text-white text-xs uppercase tracking-widest font-bold rounded-full mb-3">Poctivé floristické řemeslo</span>
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight mb-3 drop-shadow-md">Květinářství Viki</h1>
+      <p class="text-slate-200 text-sm sm:text-lg mb-6 max-w-lg mx-auto">Čerstvé vázané kytice, pokojové rostliny a kompletní floristický servis v srdci Holešovic.</p>
+      
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="tel:604459621" class="px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg hover:shadow-emerald-600/30 transition flex items-center gap-2">
+          <i data-lucide="phone-call" class="w-4 h-4"></i> Zavolat do obchodu
+        </a>
+        <a href="#katalog" class="px-5 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-bold rounded-xl transition border border-white/30">
+          Prohlédnout nabídku
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- KATEGORIE S TVÝMI FOTKAMI Č. 2 AŽ 6 -->
+  <main class="max-w-6xl mx-auto px-4 mt-8">
+    <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+      <i data-lucide="grid" class="w-5 h-5 text-emerald-600"></i> Kategorie nabídky
+    </h2>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-10">
+      <!-- Vše -->
+      <button onclick="filterCategory('all')" class="cat-btn active group relative overflow-hidden rounded-2xl h-28 shadow-sm hover:shadow-md transition text-left border-2 border-emerald-600">
+        <img src="https://scontent-prg1-1.xx.fbcdn.net/v/t39.30808-6/729161148_1839971283657922_1095141761581329529_n.jpg?stp=dst-jpg_tt6&cstp=mx1808x2048&ctp=s1808x2048&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pAXXxsU6oEIQ7kNvwGCp8Hi&_nc_oc=AdqjmIhENVoiMbxlK65y5LYDQRbSM0PNbix35udVumQ1kSsBczADwJLGL5TzVadpYBA&_nc_zt=23&_nc_ht=scontent-prg1-1.xx&_nc_gid=qf-kNdlJyh1rUAfLyPovww&_nc_ss=7b2a8&oh=00_AQP4oI0yK83ZeTko-Hs6Pf9y3tBcBAYAV6NpUepd5Uv01A&oe=6ACA8F85" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-3 flex items-end">
+          <span class="text-white font-bold text-xs sm:text-sm">Všechno</span>
+        </div>
+      </button>
+
+      <!-- Řezané kytice (Fotka č. 2) -->
+      <button onclick="filterCategory('kytice')" class="cat-btn group relative overflow-hidden rounded-2xl h-28 shadow-sm hover:shadow-md transition text-left border-2 border-transparent">
+        <img src="https://scontent-prg1-1.xx.fbcdn.net/v/t39.30808-6/646999671_1742827053372346_5121683104243254865_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx720x960&ctp=s720x960&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=7sUqP5tVIVgQ7kNvwHkLhVx&_nc_oc=AdqX9sbaT99iBLmZZ2Xdp84zkfdwzdM-wkM6hgPeAk4qu8OikXZHjkUsSyUNP90Y2-o&_nc_zt=23&_nc_ht=scontent-prg1-1.xx&_nc_gid=11Kk-YIaSMDcap6HGKuptw&_nc_ss=7b2a8&oh=00_AQOGqEdzznQyh26OYm4-M9IBJ77p5nVr_ADx6_0JL8U7Kg&oe=6ACA8B98" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-3 flex items-end">
+          <span class="text-white font-bold text-xs sm:text-sm">Řezané kytice</span>
+        </div>
+      </button>
+
+      <!-- Pokojovky (Fotka č. 3) -->
+      <button onclick="filterCategory('pokojovky')" class="cat-btn group relative overflow-hidden rounded-2xl h-28 shadow-sm hover:shadow-md transition text-left border-2 border-transparent">
+        <img src="https://scontent-prg1-1.xx.fbcdn.net/v/t39.30808-6/618795890_1705982913723427_4523793162348802240_n.jpg?stp=dst-jpg_tt6&cstp=mx1952x2048&ctp=s1952x2048&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=sUyF0XXug7AQ7kNvwEq8hfF&_nc_oc=AdruH8k0z50O0WmgyEQ0Fh9F1WPrrymxqcApEXpLSW8zGO5P3nkzkhNlcfrJaO1xbcY&_nc_zt=23&_nc_ht=scontent-prg1-1.xx&_nc_gid=oCZkEf0KOST05egP11B7Qg&_nc_ss=7b2a8&oh=00_AQOOf_PqZqgLRrxMm33lFkEsc-iSI7Z7t0xwSHzisau8mA&oe=6ACAAC8A" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-3 flex items-end">
+          <span class="text-white font-bold text-xs sm:text-sm">Pokojovky</span>
+        </div>
+      </button>
+
+      <!-- Svatební (Fotka č. 4) -->
+      <button onclick="filterCategory('svatebni')" class="cat-btn group relative overflow-hidden rounded-2xl h-28 shadow-sm hover:shadow-md transition text-left border-2 border-transparent">
+        <img src="https://scontent-prg1-1.xx.fbcdn.net/v/t39.30808-6/629264233_1720521308936254_7354564001261423777_n.jpg?stp=dst-jpg_tt6&cstp=mx558x623&ctp=s558x623&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_ohc=yeazsS6XF_oQ7kNvwH8oceu&_nc_oc=Adp-0KTDzqceiYOwOYyYNQuWHuZCDais9gcKYc_l_cNV3di4qEmZpwN8mwNQigbaLAA&_nc_zt=23&_nc_ht=scontent-prg1-1.xx&_nc_gid=bIzaWkPUZH6c0gzq75Ggyw&_nc_ss=7b2a8&oh=00_AQNxMUKrTN-ROMwif-irz0LdBdgxgk1yTxEPCmIDykBofg&oe=6ACA9FA1" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-3 flex items-end">
+          <span class="text-white font-bold text-xs sm:text-sm">Svatební</span>
+        </div>
+      </button>
+
+      <!-- Smuteční (Fotka č. 5) -->
+      <button onclick="filterCategory('smutecni')" class="cat-btn group relative overflow-hidden rounded-2xl h-28 shadow-sm hover:shadow-md transition text-left border-2 border-transparent">
+        <img src="https://scontent-prg1-1.xx.fbcdn.net/v/t39.30808-6/495179842_3936858306528295_2984992083016854825_n.jpg?stp=dst-jpg_tt6&cstp=mx960x804&ctp=s960x804&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-ZNiSueqcRcQ7kNvwEyyjHC&_nc_oc=AdoJFoWgqtuz4hNUSO6Bf7emqkcDfBaO22xGfZ4e852pIl0peI1qXli6KMKfnJhsdAc&_nc_zt=23&_nc_ht=scontent-prg1-1.xx&_nc_gid=inSxrT8uyKCDCtTbwmZy6Q&_nc_ss=7b2a8&oh=00_AQMrlIw_QDzxNynjGEfbKNPiib4uHeYn5nbibl5XQRDptA&oe=6ACA8197" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-3 flex items-end">
+          <span class="text-white font-bold text-xs sm:text-sm">Smuteční</span>
+        </div>
+      </button>
+
+      <!-- Doplňky (Fotka č. 6) -->
+      <button onclick="filterCategory('doplnky')" class="cat-btn group relative overflow-hidden rounded-2xl h-28 shadow-sm hover:shadow-md transition text-left border-2 border-transparent">
+        <img src="https://scontent-prg1-1.xx.fbcdn.net/v/t39.30808-6/619907208_1705982843723434_4792908664078484182_n.jpg?stp=dst-jpg_tt6&cstp=mx1976x2048&ctp=s1976x2048&_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=XG5_kjYlnosQ7kNvwELvVaW&_nc_oc=AdpTJAevNPmDiKYL6mm4EeI7vY-JoMKJQOHRu9Em38WAOS7HTByZKQT6shq6zfAg_lI&_nc_zt=23&_nc_ht=scontent-prg1-1.xx&_nc_gid=oBANCvqMRnI_z5XzozBH5g&_nc_ss=7b2a8&oh=00_AQMT539Z5YBVdnqnbDb16nmMPmXy1JKIdRpL2atY_w6i0Q&oe=6ACA807A" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-3 flex items-end">
+          <span class="text-white font-bold text-xs sm:text-sm">Doplňky</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- VYHLEDÁVÁNÍ A MŘÍŽKA PRODUKTŮ -->
+    <div id="katalog" class="scroll-mt-20">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <h2 class="text-2xl font-extrabold text-slate-900">Aktuální nabídka</h2>
+        <div class="relative w-full sm:w-72">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input type="text" id="search-input" onkeyup="filterProducts()" placeholder="Hledat kytici nebo rostlinu..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm">
+        </div>
+      </div>
+
+      <!-- MŘÍŽKA PRODUKTŮ Z GOOGLE TABULKY -->
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Načítání -->
+        <div class="col-span-full py-12 text-center text-slate-400">
+          <i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2 text-emerald-600"></i>
+          <p>Načítám čerstvou nabídku z Google Tabulky...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFORMACE O PRODEJNĚ & OTEVÍRACÍ DOBA -->
+    <section class="mt-16 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <i data-lucide="store" class="w-5 h-5 text-emerald-600"></i> O našem květinářství
+        </h3>
+        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+          Jsme rodinné květinářství v Praze 7 – Holešovicích. Nabízíme čerstvé řezané květiny, vazby na zakázku, pokojové rostliny i sezónní doplňky. Přijďte se k nám poradit nebo si nechte uvázat kytici přesně podle vašich představ.
+        </p>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center gap-2 text-slate-700">
+            <i data-lucide="map-pin" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+            <span><strong>Adresa:</strong> V Háji 1184/20, 170 00 Praha 7 – Holešovice</span>
+          </div>
+          <div class="flex items-center gap-2 text-slate-700">
+            <i data-lucide="phone" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+            <span><strong>Obchod:</strong> <a href="tel:604459621" class="text-emerald-700 font-bold underline">604 459 621</a></span>
+          </div>
+          <div class="flex items-center gap-2 text-slate-700">
+            <i data-lucide="user" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+            <span><strong>Majitelka:</strong> <a href="tel:603495036" class="text-emerald-700 font-bold underline">603 495 036</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <i data-lucide="clock" class="w-5 h-5 text-emerald-600"></i> Otevírací doba
+        </h3>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between py-1.5 border-b border-slate-100">
+            <span class="font-medium text-slate-600">Pondělí – Pátek</span>
+            <span class="font-bold text-slate-900">08:00 – 18:00</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-slate-100">
+            <span class="font-medium text-slate-600">Sobota</span>
+            <span class="font-bold text-slate-900">08:00 – 12:00</span>
+          </div>
+          <div class="flex justify-between py-1.5 text-slate-400">
+            <span class="font-medium">Neděle & Sváteční dny</span>
+            <span class="font-semibold text-rose-500">Zavřeno</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SKRIPTY PRO NAČÍTÁNÍ DATA & INTERAKTIVITU -->
+  <script>
+    let allProducts = [];
+    let activeCategory = 'all';
+
+    // 1. Automatické zjištění otevřeno / zavřeno
+    function updateOpeningStatus() {
+      const now = new Date();
+      const day = now.getDay(); // 0 = Neděle, 1 = Po, ... 6 = So
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      const timeInMinutes = hour * 60 + minute;
+
+      const badge = document.getElementById('status-badge');
+      let isOpen = false;
+
+      if (day >= 1 && day <= 5) { // Po - Pá: 8:00 - 18:00
+        if (timeInMinutes >= 8 * 60 && timeInMinutes < 18 * 60) isOpen = true;
+      } else if (day === 6) { // So: 8:00 - 12:00
+        if (timeInMinutes >= 8 * 60 && timeInMinutes < 12 * 60) isOpen = true;
+      }
+
+      if (isOpen) {
+        badge.className = "px-2.5 py-0.5 rounded-full font-bold text-xs bg-emerald-500 text-white flex items-center gap-1.5";
+        badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> Nyní otevřeno';
+      } else {
+        badge.className = "px-2.5 py-0.5 rounded-full font-bold text-xs bg-rose-500 text-white flex items-center gap-1.5";
+        badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-white"></span> Nyní zavřeno';
+      }
+    }
+
+    // 2. Načtení dat z Google Tabulky
+    function loadProducts() {
+      Papa.parse(GOOGLE_SHEET_CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          allProducts = results.data;
+          renderProducts(allProducts);
+        },
+        error: function(err) {
+          console.error("Chyba při načítání CSV:", err);
+          document.getElementById('products-grid').innerHTML = `
+            <div class="col-span-full py-8 text-center text-rose-500">
+              Nepodařilo se načíst data z Google Tabulky. Zkontroluj CSV link.
+            </div>`;
+        }
+      });
+    }
+
+    // 3. Vykreslení kartiček produktů
+    function renderProducts(products) {
+      const grid = document.getElementById('products-grid');
+      grid.innerHTML = '';
+
+      if (products.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400">V téhle kategorii zatím nic není.</div>`;
+        return;
+      }
+
+      products.forEach(p => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition border border-slate-100 flex flex-col";
+        
+        const imgUrl = p.img || 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600';
+        const tagHtml = p.tag ? `<span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">${p.tag}</span>` : '';
+
+        card.innerHTML = `
+          <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-100">
+            <img src="${imgUrl}" alt="${p.name}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+            ${tagHtml}
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="font-bold text-slate-900 text-base mb-1">${p.name || 'Bez názvu'}</h3>
+              <p class="text-slate-500 text-xs leading-relaxed mb-3 line-clamp-2">${p.desc || ''}</p>
+            </div>
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between mt-auto">
+              <span class="text-emerald-700 font-extrabold text-lg">${p.price || ''}</span>
+              <a href="tel:604459621" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold rounded-lg transition flex items-center gap-1">
+                <i data-lucide="phone" class="w-3.5 h-3.5"></i> Objednat
+              </a>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // 4. Filtrování podle kategorií
+    function filterCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('border-emerald-600'));
+      event.currentTarget.classList.add('border-emerald-600');
+      filterProducts();
+    }
+
+    // 5. Vyhledávání textem
+    function filterProducts() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      const filtered = allProducts.filter(p => {
+        const matchesCat = activeCategory === 'all' || (p.category && p.category.toLowerCase() === activeCategory);
+        const matchesQuery = (p.name && p.name.toLowerCase().includes(query)) || (p.desc && p.desc.toLowerCase().includes(query));
+        return matchesCat && matchesQuery;
+      });
+      renderProducts(filtered);
+    }
+
+    // Spuštění po načtení
+    window.onload = function() {
+      updateOpeningStatus();
+      loadProducts();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
